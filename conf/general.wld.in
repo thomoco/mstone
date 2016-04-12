@@ -1,0 +1,74 @@
+# common setup info for tests
+# See sample.wld for detailed usage
+
+# Information on how the test is distributed and reported
+# Test independent configuration
+<CONFIG>
+  # Debug with short runs and a few clients, then increase test time
+  # These get overridden in the test specific files (or the command line)
+  clientCount	2	# nominal clientCount (usually overriden)
+  rampTime 	20s
+  time		1m
+
+  # Each test should set a title/comments in their CONFIG section
+  # This is a reminder to set something
+  title		Need to set test title...
+  comments      Some sort of testing...
+  #sysConfig 	conf/sample.html	# File for additonal system config
+
+  # Uncomment this to enable core dumps:
+  #clientCommand ulimit -Sc 900000; ./mailclient
+</CONFIG>
+
+# Each <Monitor> section defines remote monitoring commands 
+#   for one or more machines.
+# Commands containing '%c' run to completion.  
+#  Otherwise the command will be shutdown down
+<MONITOR>
+  name          vmstat.txt            # outfile will be CLIENT*-NAME
+  command       vmstat %f
+  process       conf/clean_vmstat.pl  # custom processing script
+</MONITOR>
+
+# The PreTest sections will run before the test starts
+<PRETEST>
+  name    preifconfig.txt  # outfile will be CLIENT*-NAME
+  command	ifconfig
+</PRETEST>
+
+# The PostTest sections will run after the test ends
+<POSTTEST>
+  name 		ifconfig.txt  # outfile will be CLIENT*-NAME
+  command	ifconfig; uname -a
+  # clean_ifconfig expects the input name to be preifconfig.txt or pretest.txt
+  process       conf/clean_ifconfig.pl  # custom processing script
+</POSTTEST>
+
+# The <DEFAULT> tag sets protocol block defaults
+<DEFAULT>
+  # defaults for both e-mail and revision control systems
+  loginFormat	mailtestuser%ld
+  passwdFormat	myPassword
+  numLogins	100
+  firstLogin	0
+
+  # e-mail defaults
+  server	mailhost.example.com
+  smtpMailFrom	mailtestuser0@mailhost.example.com
+  addressFormat	mailtestuser%ld@mailhost.example.com
+  numAddresses	100
+  firstAddress	0
+
+  # revision control system defaults
+  repoUrl       http://myLocalSvn
+  topDir 	repoTop/mstone
+
+</DEFAULT>
+
+
+# Specify client machines
+# mstone assigns the same process/thread counts to each host in a client block.
+# Use one host per client block for maximum allocation flexibility.
+<CLIENT HOSTS=localhost>
+  maxThreads 100
+</CLIENT>

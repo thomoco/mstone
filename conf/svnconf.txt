@@ -1,0 +1,6 @@
+<PRE>
+<B> Local subversion server </B>
+  The client and server are on ??? network with the SVN repository on ???.
+  Client is linked against svn-1.?.?.
+  Working copy is on local disk.
+</PRE>

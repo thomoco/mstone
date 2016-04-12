@@ -1,0 +1,37 @@
+# Steady state workload
+# Uses most operations while keeping file count constant.
+#
+# conf/svn-gen.wld holds general svn setup and graphing
+<includeOnce conf/rcs-gen.wld>
+
+# Subversion workload
+# Config applies to how the test is run
+<CONFIG>
+  title         Steady-state workload
+</CONFIG>
+
+<DEFAULT>
+  # Default to perftest for data-*.  Usually overridden by topdir-*
+  topDir  parenttest/perftest/mstone # directory under repoUrl
+</DEFAULT>
+
+<SVN>
+  numLoops    5         # how many loops to run after a checkout
+
+  # The following operations are per loop:
+  stat        5.0       # iterations to stat WC
+  list        1.5       # iterations of a recursive list
+  log         2.0       # number of files to get logs for
+  # the test protocol does an update in every loop
+  diff        1.0       # iterations to list WC against prev version
+  modFiles    1.0       # number of files to modify
+  commit      0.3       # commit probability
+  blame       0.02      # number of files to find blame
+
+  # These are disabled to avoid changing the checkout characteristics
+  #addFiles    0.01	# number of files to add per loop
+  #deleteFiles 0.01 	# number of files to delete per loop
+
+  logLimit     -50	# reverse log from head
+  revSpan     500       # diff/log of something in the last N revs
+</SVN>

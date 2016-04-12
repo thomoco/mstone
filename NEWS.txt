@@ -1,0 +1,141 @@
+==== mstone-4.9.4 ====  12 May 2008.  Dan Christian.
+
+The semantics of block and loop delays have changed.  This is now the
+minimum time the block or loop should take (the delay subtracts the
+time so far with microsecond precision).  This makes it easier to
+design workload that run at a constant rate (loops/minute).
+
+The report generation support has evolved.  Reports are now stored in
+their own directories (so you can save extra data there).  There is
+now better support for reporting multiple timer variables and
+calculating alternate forms (e.g. estimates of the 95th percentile
+time).  Test run results can now link to extra files (from POSTTEST
+scripts).  The help output is much more detailed.
+
+The reporting is now smarter about what errors cause a connection to
+be closed.  You can now re-write timer data (e.g. convert standard
+deviation to 95% percentile).
+
+You can now filter certain variables out of final reports.  This makes
+it easier to avoid publishing passwords and accounts.
+
+The HTML reports now link to the appropriate section in the manual.
+In addition, you can now hover over a timer name and get a one line
+description.  The link colors in reports have been updated.  
+
+There is now a link to the previous test run if it was started on the
+same day.  This makes it easier to browse a test series.
+
+There is a new perforce (P4) module.  You need p4api.tar from
+ftp://ftp.perforce.com/perforce/ and a g++-3.4 (or later) compiler to
+build it.
+
+There is a new RCSFAKE module that generates data without contacting a
+server.  It is mainly used to verify graphs and reporting.  It doesn't
+require any external libraries to build.
+
+SVN, P4, and RCSFAKE share code through src/rcs.[ch].  This is just a
+generic revision control system support code, not the old RCS package.
+The word dictionary is shared at run time.
+
+The SVN, P4, and RCSFAKE modules now understands probability
+distributions for most variables.
+
+words-ascii no longer contains the substring 'fault'.  This makes
+parsing of other "faults" in the error log more reliable.  The report
+error scanner is now easier to extend.
+
+Fixed docs to use 'starttls' everywhere.
+
+Moved some common file operations (like removing an entire directory
+tree) to src/files.c.
+
+Clean up the probability distribution code to allow the stand alone
+tool to cleanly build.
+
+==== mstone-4.9.3 ====  13 Jul 2007.  Dan Christian.
+
+This is the first major release in a long time.  It is essentially a
+alpha release for a 5.0.
+
+The build system is now based on cmake.  This should supporting new
+platforms more easily.  See Building.txt for specifics.  All the same
+compile options exist.  Only Linux has been fully tested.  Build
+support for (the now readily available) support packages gnuplot, gd,
+and perl has been removed.
+
+Windows support has been removed.  It was badly bit rotted and made it
+hard to manage the code.  Windows support can be brought back at some
+point using either cygwin, mgwin, or visual studio (cmake supports all
+these options).
+
+Multi-platform builds are a bit different.  Now they install binaries
+into build/OS.  To do an all platform build, build each platform
+separately and then install them all into the same directory (or just
+copy the proper build directory over).
+
+mstone is now better about monitoring sub-processes.  It will signal
+shutdown if they go over time by more than 2 minutes.  It will send
+more and more assertive signals to get it shut down.  This greatly
+reduces hung tests (usually due to a hung server connection) and
+zombie mailclients.  This may not be sufficient if there are multiple
+processes on each client machine.  Typing Ctrl-C will cause mstone to
+initiate the shutdown, run posttest scripts, and generate the final
+report.
+
+You can now check the test report while the test is running.  It does
+the initial report generation after 15sec, and then updates every
+minute.
+
+Lots of report updates.  The pretest, monitor, and posttest results
+are formatted as a block (instead of one line per host).  There is now
+a link to the previous test run and to the index.  The time rate
+tables are now per minute (except byte throughputs) instead of per
+second).  The log files now end in .txt to give browsers a clue about
+how to display them.
+
+The test report index now shows all workloads that were passed on the
+command line.
+
+You can now name and specify a post processing script for pretest,
+monitor, and posttest blocks.  This allows you to select just the
+useful parts for display.
+
+The pretest, monitor, and posttest blocks will now run on each active
+client if the HOSTS= parameter isn't set.
+
+There is now a easy way to run multiple tests (conf/test-*.sh) and
+generate a report that compares multiple runs (conf/report-*.pl).
+This can also copy the results and summary reports to a final display
+area (with index).  See the manual for the details.
+
+Graph averaging is now done slightly differently.  It now averages
+just the non-0 entries.  This skips entries where nothing was returned
+from a particular client.  This give better results for operations
+that take longer than the sample frequency.
+
+New support for the subversion revision control system (SVN).  This is
+the first "protocol" that isn't related to e-mail.  Other revision
+control systems should be easy to add to the core infrastructure.
+
+Config mode ("./setup config") now understands how to configure SVN
+and clients independently of the e-mail setup.
+
+Massive updates to the manual.  The OpenOffice formatting now works
+reasonably well.  Lots of tighening up to avoid duplication or
+description of trivial setup steps.  The SendMail contributions have
+now been merged in so each protocol description should now be
+complete.
+
+Some tweaking of the SendMail additions.  Specifically, getdist is now
+built automatically and the conf/*.wld.in files have been removed
+(because I don't have the rest of the conversion system).
+
+timesync is no longer a top level script (actually a link).  Use
+"./setup timesync" instead.  Most OSes already have ntpd or ntpdate
+these days, so this is rarely needed (and the root requirement is
+often problematic).
+
+You can now build with threads disabled and still get result graphs.
+The update rate is pretty sporadic (no updates within the block loop),
+but it still helps a bit with debugging.

@@ -1,0 +1,29 @@
+# SVN (Subversion) setting that override svn-gen.wld
+# Pass in on the command line like this:
+#  ./mstone svn-ss -w conf/svnrepo-ssl.wld ...
+
+<CONFIG>
+  sysConfig     conf/svnconf-ssl.txt
+</CONFIG>
+
+<DEFAULT>
+  repoUrl 	https://mySecureSvn
+  topDir 	repoTop/mstone
+  subdir 	subdir%d	# sub directory pattern (below repoUrl/topDir)
+</DEFAULT>
+
+<MONITOR HOSTS=localhost>
+  command /home/dchristian/bin/poll_url %f http://svnfe1/varz?output=text http://svnfe2/varz?output=text
+  process conf/clean_varz.pl
+  name    varz.txt  # outfile will be CLIENT*-NAME
+</MONITOR>
+
+# The PreTest sections will run before the test starts
+<PRETEST HOSTS=localhost>
+  command	uname -a ; ping -c 3 mySecureSvn ; ifconfig
+</PRETEST>
+
+# The PreTest sections will run before the test starts
+<POSTTEST HOSTS=localhost>
+  command	ifconfig
+</POSTTEST>

@@ -1,0 +1,49 @@
+# Sample SVN (subversion) configuration showing all possible options.
+
+# svn protocol block
+<SVN>
+  loginFormat 	test
+  passwdFormat 	password
+  firstLogin    0
+  numLogins 	1
+  #sequentialLogins 0
+
+  repoUrl 	http://svn-dav-server.example.com
+  topDir 	perftest/mstone
+  subdir 	subdir%d 	# sub directory pattern (below repoUrl/topDir)
+  interface   	neon    	# DAV interface to use: neon, serf
+  firstSubDir 	0         	# First subdir
+  numSubDir 	100       	# Number of subdirs
+
+  localdir      /tmp/mstonesvn	# where to put local working copy
+  # List of words to use to randomly generate content.
+  #wordDict      /usr/share/dict/words
+  wordDict      words-ascii.dat
+
+  blockTime     1s
+  loopDelay     1s
+  commitRetry   3	# how many time to re-try commit (transient failures)
+
+  numLoops    5
+
+  # Note that fractional values are probabilistic
+  addFiles    0.5       # number of files to add per loop
+  deleteFiles 0.2       # number of files to delete per loop
+  mkdir       0.1       # number of directories to create per loop
+  list        1.0       # probability of doing a recursive list (per loop)
+  modFiles    2         # number of files to modify per loop
+  diff        1.2       # number of times to list WC against prev version
+  stat        1.0       # number of times to stat WC
+  log         2         # number of files to get logs per loop
+  blame       2         # number of files to find blame per loop
+  commit      1.0       # Probability of committing (per loop) (default 1.0)
+
+  modChunkCnt 3         # number of places to make changes (default 1)
+  modChunkSize 3        # approximate size of each change (default 20)
+  addSize  10240        # approximate size of added files (default 1k)
+  weight      50        # weight relative to other blocks
+  revSpan    200	# revisions up to this far back (diff)
+  logLimit    10        # how far back to get logs (negative for rev order)
+  revision     0        # revision to checkout at (0 means head)
+  updateStep  10        # max revisions to advance (0 means to head)
+</SVN>

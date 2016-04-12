@@ -1,0 +1,416 @@
+2008-03-06  Dan Christian  <dchristian@google.com>
+	
+	* src/p4.cc:  Fix problems with deleting clients (and revert)
+	
+2007-11-27  Dan Christian  <dchristian@google.com>
+	
+	* src/p4.cc:  Improve SVN-P4 correspondence
+	
+2007-09-26  Dan Christian  <dchristian@google.com>
+
+	* src/CMakeLists.txt: Only pass svn includes to svn.c
+	Add P4 config option.
+
+	* src/p4.cc: Add a skeleton perforce module (similar to svn.c)
+
+2007-08-30  Dan Christian  <dchristian@google.com>
+
+	* src/rcs.c (RcsParseNameValue): Parse variable distributions.
+
+	* src/rcs.h: Let several variables be distributions.
+
+	* src/svn.c (doSvnLoop): Support variable distributions.
+
+	* src/idle.h: Move NOLIMIT here and rename to DIST_NOLIMIT.
+
+2007-08-13  Dan Christian  <dchristian@google.com>
+
+	* conf/testutil.sh (stderr_ignore): Put summary reports in a directory
+	(stderr_ignore): Wait for signaled processes to exit
+
+2007-08-07  Dan Christian  <dchristian@google.com>
+
+	* process: Be more exact about detecting runs (avoid reports)
+
+	* bin/reportutil.pl (ParseCommonArgs): Understand report directories.
+
+	* bin/report.pl (genHTMLReportEnd): Include extra files in report.
+
+2007-08-06  Dan Christian  <dchristian@google.com>
+
+	* src/svn.c (doSvnLoop): Rev>=1 for diff and log.
+	Show difference size, log count, or blame lines in debug mode.
+	
+2007-07-26  Dan Christian  <dchristian@google.com>
+
+	* src/client.c (delay): Make delay handling more linear.
+
+	* mstone: Only pass general.wld to setup if no other arguments
+
+2007-07-24  Dan Christian  <dchristian@google.com>
+
+	* conf/reportwiki.pl: Add custom results processing callback.
+
+	* conf/report-svn-all.pl: Show all config variables (commented out).
+
+	* bin/reportutil.pl (SelectFields): Support timer sub fields
+
+	* CMakeLists.txt,bin/mailmaster.pl,src/bench.h: Version now 4.9.4
+
+2007-07-13  Dan Christian  <dchristian@google.com>
+
+	* src/rcs.c (RcsParseEnd): Allow empty login/password (for anonymous).
+
+2007-07-11  Dan Christian  <dchristian@google.com>
+
+	* bin/reportutil.pl: Move here from conf/
+
+	* conf/reportwiki.pl: Support displaying rate fields
+
+	* conf/report.pl: Change text report rates to be per minute.
+
+	* conf/reportutil.pl (ParseTimerFields): Take data hash as an argument.
+
+	* bin/util.pl (parseArgs): Remove obsolete -m argument.
+
+	* bin/setup.pl: Clean up and add SVN support.
+
+	* conf/general.wld: Removed.  setup will copy from general.wld.in
+	
+	* conf/general.wld.in: Update to include general SVN configuration.
+
+2007-07-10  Dan Christian  <dchristian@google.com>
+
+	* src/idle.c (parse_distrib): Fix bug passing wrong param arg.
+
+	* src/getdist.c (main): Split out of idle.c (was TEST_PROB code)
+
+2007-07-03  Dan Christian  <dchristian@google.com>
+
+	* src/rcs.c (RcsParseEnd): Empty login/password is OK.
+
+	* conf/reportutil.pl (SelectFields): Give an error for undefined fields
+	(ParseTimerFields): The data hash is now passed as an argument.
+
+	* conf/reportwiki.pl: Parse rate fields in addition to counts.
+
+2007-07-02  Dan Christian  <dchristian@google.com>
+
+	* src/main.c (launchChild): Randomize per/process start time
+
+	* bin/mailmaster.pl,util.pl,setup.pl: Remove NT support
+
+2007-06-26  Dan Christian  <dchristian@google.com>
+
+	* bin/util.pl (getPreviousResult): Added to find previous run.
+
+	* bin/report.pl (genHTMLReportStart): Insert a previous and index link.
+
+	* src/svn.c: Be able to select neon or serf interfaces at run time.
+
+	* src/rcs.c: Add an "interface" parameter.
+
+	* bin/util.pl: Update ssh parameters to avoid warnings.
+
+	* conf/test-svn-load.sh: Update to support quick runs
+
+	* conf/test-single.sh: A way to run one test with all the extras.
+
+	* conf/testutil.sh: "Consume" parse command line arguments.
+	Add -q to trigger quick runs.
+	Name stack traces with .txt.
+	Print something every time we wait indefinitely.
+
+	* bin/report.pl (genLogLine): Write a more compact list of log files.
+
+2007-06-21  Dan Christian  <dchristian@google.com>
+
+	* src/svn.c (_context_setup): Select http_library (neon or serf)
+
+2007-06-20  Dan Christian  <dchristian@google.com>
+
+	* conf/reportwiki.pl: Fix permissions on html report.
+	Fix first line of tables to not have broken links.
+
+	* conf/testutil.sh: Retrieve core files and generate stack trace
+	(make_all_stacks): Fix bug detecting duplicate stacks
+
+	* conf/reportutil.pl: Fix permissions on copied files
+
+2007-06-14  Dan Christian  <dchristian@google.com>
+
+	* src/parse.c (paramListAdd): Reduce allocations by 1/3.
+
+	* src/wmap.c: Big style clean up.
+
+	* src/parse.c (string_list_t): re-write to be faster and cleaner.
+
+	* src/main.c (main): Print help after protocols are registered.
+
+	* src/rcsfake.c: A fake RCS module for testing
+
+2007-06-13  Dan Christian  <dchristian@google.com>
+
+	* src/rcs.h: Renamed from svn.h
+
+	* src/rcs.c: Split generic RCS functions out of svn.c
+
+	* src/ssl.c: Initialize openssl for threading.
+
+	* src/main.c (initializeCommands): refactor config buffer handling.
+
+	* src/xalloc.c (xfree): Don't free NULL.
+
+	* conf/test*.sh: Run a sequence of mstone runs (with retries)
+
+	* conf/report*.pl: Generate a table of results from several runs.
+
+2007-06-04  Dan Christian  <dchristian@google.com>
+
+	* src/CMakeLists.txt: Find gssapi_krb5 library
+
+	* src/svn.c (_log_file,_blame_file): Set peg_rev to our_rev
+
+2007-05-30  Dan Christian  <dchristian@google.com>
+
+	* src/client.c (do_command): Generate time summaries if no threads.
+
+2007-05-24  Dan Christian  <dchristian@google.com>
+
+	* src/svn.c (_file_notify): Track changed file count.
+	Understand more actions and show debug info for unknown ones.
+
+	* src/sysdep.h: Remove more WIN32 support
+
+2007-05-22  Dan Christian  <dchristian@google.com>
+
+	* src/sysdep.c: Remove obsolete WIN32 support
+
+	* src/CMakeLists.txt: Remove untested WIN32 support
+
+2007-05-21  Dan Christian  <dchristian@google.com>
+
+	* src/svn.c (_do_update): Differentiate between file/dir in updates.
+	(_log_file): Take initial revision as an argument.
+
+2007-05-18  Dan Christian  <dchristian@google.com>
+
+	* src/words.c (WordDelete): Added.  Delete using string compares.
+
+	* src/svn.c (_file_notify): Track file addition/removal in file list.
+
+	* src/main.c (main): Allow random seed to be set on command line.
+
+	* src/svn.h: Add checkout revision and updateStep support.
+
+2007-05-16  Dan Christian  <dchristian@google.com>
+
+	* bin/mailmaster.pl: Silence gnuplot errors during test run.
+
+	* bin/report.pl (genHTMLReportStart): Fix links to pre/post data.
+
+	* conf/general.wld: Add ifconfig pretest and posttest
+
+	* conf/clean_ifconfig.pl: Example script for posttest processing
+
+2007-05-14  Dan Christian  <dchristian@google.com>
+
+	* src/CMakeLists.txt: Don't break if svn is not found.
+
+	* Add Subversion (SVN) support.
+
+	* Bump revision to 4.9.3
+
+2007-05-11  Dan Christian  <dchristian@google.com>
+
+	* bin/report.pl: Show test duration in human units.
+
+	* bin/protoconf.pl: SVN automatically closes on checkout errors.
+
+	* bin/mailmaster.pl: Fix process termination detection.
+	Reduce output while the test is running.
+	Show more info in stderr about execution stages.
+	Trap Ctrl-C and shutdown nicely (and with POSTTEST).
+	
+	* bin/reduce.pl: Fix the list of fields the close connections.
+	Reset graph and final tallies for each run.
+	
+2007-05-10  Dan Christian  <dchristian@google.com>
+
+	* bin/mailmaster.pl: Generate reports during test.
+	If test runs over time, signal it to exit.
+	Detect common problem indicators in results/TEST/stderr.
+
+2007-05-09  Dan Christian  <dchristian@google.com>
+
+	* src/svn.c: Add protocol for the subversion version control system.
+
+2007-05-08  Dan Christian  <dchristian@google.com>
+
+	* bin/setup.pl (configWorkload): Install mailclient (not clientCommand)
+
+2007-05-04  Dan Christian  <dchristian@google.com>
+
+	* bin/util.pl (runScripts): Move script invocation to a subroutine.
+	(processScripts): Allow post-processing of pre/post scripts.
+
+	* bin/mailmaster.pl (figurePT): Improve allocation at low counts.
+	(figurePT): Fix broken syntax building allClients.
+
+2007-05-02  Dan Christian  <dchristian@google.com>
+
+	* src/errexit.c (d_printf): Add shorthostname and time to debug msgs.
+	(returnerr): Use client shorthostname instead of full hostname.
+
+	* src/client.c (clientSummaryFormat): Add asserts to help verify
+	detect buffer overflow (todo: pass in size when doing format).
+
+	* src/main.c (main): Create gs_shorthostname for debug messages
+
+2007-04-24  Dan Christian  <dchristian@google.com>
+
+	* bin/reduce.pl (walkTotalFinals): Update @allClients for reporting.
+
+2007-04-18  Dan Christian  <dchristian@google.com>
+
+	* src/svn.h: Add a commit probability.
+
+2007-04-17  Dan Christian  <dchristian@google.com>
+
+	* src/main.c (usage): Format help strings better.
+	(parseArgs): Warn if -e passed, but events disabled.
+	(main): Use socklen_t instead of hacking around old OSes.
+
+	* src/parse.c (count_num_commands): Always show unknown block warning.
+
+	* conf/clean_vmstat.pl: Also show paging activity.
+
+	* bin/reduce.pl: Dynamically handle protocols that close on error.
+
+	* bin/protoconf.pl: List protocol that automatically close on error.
+
+	* bin/setup.pl: Copy both *.msg and *.dat file during setup.
+	Use cp -f when doing local copies.
+
+2007-04-13  Dan Christian  <dchristian@google.com>
+
+	* bin/mailmaster.pl: pretest, monitor, and posttest now run on all
+	client machines when HOSTS= is not specified.
+
+2007-03-21  Dan Christian  <dchristian@google.com>
+
+	* CMakeLists.txt, Building: Do build configuration with CMake.
+	The Makefiles have been renamed to Makefile.old.
+	CMake will generate Makefiles automatically.
+	Support for building/packaging our own perl and gnuplot was dropped.
+
+2007-03-06  Dan Christian  <dchristian@google.com>
+
+	* bin/util.pl: Build test name from all workload file names.
+
+	* bin/makeindex.pl: Generate a better index from existing data.
+
+	* bin/*.pl: Changed mailstone to mstone in all html pages.
+	Renamed logs to be more browser friendly (now *.txt).
+	Strip out the oldest back compatibility support.
+
+2007-02-15  Dan Christian  <dchristian@google.com>
+	
+	* genplot.pl: Skip Total table if there is only one protocol.
+	Show test duration in human units.
+	Show tries and errors per minute (instead of per second).
+	Fix gnuplot terminal query data leak.
+	
+2006-07-10  Dan Christian  <robodan@idiom.com>
+
+	* docs/ Incorporated Sendmail mods into main manual.
+
+	* Generated html version of updated manual.
+
+	* Removed old framemaker version of manual and html.
+	
+	* Building: Show simplest build line.  Remove NT.  Spell check.
+
+	* Makefile (srctarball): Create a properly structured tarball
+
+2006-04-18  Dan Christian <DanChristian65@gmail.com>
+	
+	* Fix gnuplot interactions to work with v4
+
+	* Reduce some stderr output
+
+	* Properly document new default time (millisconds)
+	
+2005-02-19  Dan Christian  <robodan@idiom.com>
+
+	* Merge big Sendmail patch see ChangeLog-Sendmail for details
+
+	* src/bench.h (VERSION): Start working toward version 5.0 (now 4.9)
+
+2004-09-07  Dan Christian  <robodan@idiom.com>
+
+	* data/*.msg: Updated with more realistic messages
+
+	* bin/args.pl: Really fix doc link to be relative
+
+	* src/smtp.c (sendSMTPLoop): Handle file lists (random selection)
+	(sendFile): New, send file with option offset and head/tail
+	(SmtpFilePrep): Split a glob pattern to a list
+	(SmtpFileInit): New, split out initial file scan
+
+	* src/bench.c (rangeNext): Get to last value in a random range
+
+2004-06-14  Dan Christian  <robodan@idiom.com>
+
+	* Makefile (VERSION): Bump version to 4.3
+
+	* Make build work on recent versions of Linux and Solaris
+
+	* Make ssh the default way to get a remote shell
+
+	* Support SVG graph output (not supported by all browsers)
+
+	* Use rfc822 style from addresses
+
+	* Fix documentation link on index page to be local
+
+2000-04-28  Dan Christian  <dac@x.cx>
+
+	* http and wmap now use common routines from http-util
+
+	* http is now separated from the pish command structure.
+
+2000-04-27  Dan Christian  <dac@x.cx>
+
+	* bin/genplot.pl: Support gnuplot generating images other than gif
+
+	* src/smtp.c (sendSMTPStart): Send domain name with HELO
+
+2000-04-05  Dan Christian <robodan@netscape.com>
+	* Fix bug in WMAP where the login field was reporting banner data.
+
+	* Add a reconnect concept to WMAP.  This separates out the
+	reconnect activity from the initial connections.  There is still a
+	bug/feature that the reconnect increments an error which can
+	eventually hit the maxErrors limit.  You have to record the error
+	or else you could not get the "connections" graph right.
+	
+2000-03-31  Dan Christian <robodan@netscape.com>
+	
+	* Merged setup and mstone into one script to reduce command
+	namespace polution.  "mstone setup" is the the same as "setup".
+
+	* Made setup try to be more tolerant of OSes that were not
+	include in the distribution.  SunOS 5.7 will fall back to 5.6.
+
+	* Now package conf/general.wld.in and only copy to general.wld if
+	there isn't one already in place.  This means that you can unpack
+	new bits over old bits without blowing away your configuration.
+	
+	* Added <includeOnce file> command to workloads.  This allows
+	tests to be used either as a stand alone or as part of another
+	test (e.g. smtp).
+
+	* Converted ChangeLog to more common formating
+
+	* Spilt off old ChangeLog entries to ChangeLog.1 and ChangeLog.2

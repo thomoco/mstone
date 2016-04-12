@@ -1,0 +1,38 @@
+# workload that should stay roughly stead state (adds = dels)
+# conf/p4-gen.wld hold general p4 setup and graphing
+<includeOnce conf/p4-gen.wld>
+
+<DEFAULT>
+  repoUrl    localhost:1818             # becomes P4PORT
+  topDir     mstone
+  subDir     testdir
+</DEFAULT>
+
+# Perforce workload
+# Config applies to how the test is run
+<CONFIG>
+  title         Lots of small changes
+  time          15m
+  clientCount	10
+</CONFIG>
+
+# p4 protocol block
+<P4>
+  # Set repoUrl and comments in p4-gen.wld
+  numLoops     10
+  loopDelay    5.0      # min time for a loop (seconds)
+
+  list        1.0       # number of times to do a recursive list (files)
+  modFiles    1.0       # number of files to modify (edit)
+  addFiles    0.1	# number of files to add
+  deleteFiles 0.1 	# number of files to delete
+  stat        1.0       # number of times to stat WC
+  diff        1.0       # number of times to list WC against prev version
+  log         1.0       # number of files to get logs
+  blame       1.0       # number of files to find blame (annotate)
+  mkdir       0.001     # number of directories to create per loop
+  commit      1.0       # probability of doing the commit (submit)
+
+  #logLimit     -50	# reverse log from head
+
+</P4>

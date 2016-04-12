@@ -1,0 +1,55 @@
+Mstone building instructions
+
+You need cmake-2.4.4 (or later) and a C compiler (e.g. gcc) to build
+mstone.  Ubuntu 6.10 (Edgy Eft), Fedora 7, and OpenSuse 10.3 and later
+releases ship with a compatible version of cmake.  You can download
+cmake from here: http://www.cmake.org.  If cmake complains about bad
+INSTALL rules, then you have an old version.
+
+You will need perl-5.6 (or later) and gnuplot-4 to run mstone.
+
+Do:
+    ccmake CMakeLists.txt (edit options, type 'c', repeat, then type 'g')
+    make
+    make install
+
+
+Configuration notes:
+
+Don't try to run anything from the build tree!  The scripts will
+create some links that confuse "make install".  The proper layout for
+the scripts is created during "make install".  If you get an "FILE
+INSTALL cannot copy" error, remove any broken symbolic links and then
+re-run the install.
+
+See src/README-svn.txt for notes about the subversion module.
+
+APR_CONFIG and SVN_CLIENT_LIB are required to build the SVN support.  If
+you aren't going to build SVN, then it's OK for them to be NOT_FOUND.
+
+The SOCK_SSL option will only appear once SSL_LIB and CRYPTO_LIB are found.
+
+The DYNAMIC_THROTTLE option will only appear if USE_EVENTS is enabled.
+
+Enable SOCK_LINESPEED for line speed emulation support (latency and
+bandwidth parameters).
+
+The SVN_MODULE option will only appear once APR_CONFIG and
+SVN_CLIENT_LIB are valid.  Hit 'c' for cmake to notice the changes and
+bring up any new options.  SVN_MODULE also needs a valid GSS_LIB (the
+cmake configuration should be smarter about detecting this).
+
+Setting DISABLE_THREADS can help with debugging.  The thread count
+argument to mailclient will be ignored and test data will be sporadic.
+
+For a complete list of build options, do "cmake -i CMakeLists.txt".
+You can see the current configuration options like this: "cmake -L
+CMakeLists.txt".  You can find other make targets by doing "make
+help".  Note that you need to configure the install path in cmake
+(i.e. you can't set it during "make install").
+
+
+The perl style can be set in emacs with the following lines:
+(require 'cperl-mode)
+(defalias 'perl-mode 'cperl-mode)
+(cperl-set-style "PerlStyle")

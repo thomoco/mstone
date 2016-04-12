@@ -1,0 +1,183 @@
+# P4 (perforce) defaults and graphing (no clients or protocol blocks)
+# It is included from other workloads (no protocol blocks here).
+# Values may be overridden by other workloads files (last definition wins).
+
+# conf/general.wld holds our client machine list, logins, etc
+<includeOnce conf/general.wld>
+
+# Perforce workload
+# Config applies to how the test is run
+<CONFIG>
+  title         Perforce	# should be overridden by the test
+  #sysConfig	conf/p4conf.txt
+  noevents	1    # events don't help much and may trigger a bug (see notes)
+
+  # The perforce blocks usually take a long time.
+  # Lots of errors typically indicates a configuration problem.
+  maxErrors	1000 # set an error abort limit
+  rampTime 	60s
+  time		2m
+  #frequency     2    # sample every 2 sec. (even for long test times)
+</CONFIG>
+
+# Default applies to all protocol blocks
+<DEFAULT>
+
+  # general.wld should be defining: 
+  #  loginFormat, passwdFormat, numLogins, firstLogin, repoUrl, topDir
+  #subdir 	subdir%d	# sub directory pattern (below repoUrl/topDir)
+
+  wordDict      words-ascii.dat
+  localdir 	/tmp/mstonep4     # local disk
+
+  blockTime     30s	# minimum time for a block
+  loopDelay     3s	# minimum time for a loop
+  commitRetry   3       # how many times to attempt: sync, submit, resolve
+  revSpan       50 	# revisions up to this far back (diff/log/blame)
+  logLimit      -30 	# how far back to get logs (negative for rev order)
+  addSize      10240 	# approximate size of added files
+  modChunkCnt  5 	# number of places to make changes
+  modChunkSize 64       # size of each modification
+</DEFAULT>
+
+
+<GRAPH name=checkoutTime>
+  Title 	Checkout time
+  label 	Seconds per checkout
+  variables 	checkout
+  field 	Time
+</GRAPH>
+
+<GRAPH name=commitTime>
+  Title 	Commit time
+  label 	Seconds per commit
+  variables 	commit
+  field 	Time
+</GRAPH>
+
+<GRAPH name=updateTime>
+  Title 	Update time
+  label 	Seconds per update
+  variables 	update
+  field 	Time
+</GRAPH>
+
+<GRAPH name=stat>
+  Title 	Get status of changed files
+  label 	Seconds per check
+  variables 	stat
+  field 	Time
+</GRAPH>
+
+<GRAPH name=listing>
+  title 	Recursive listing from a URL
+  label 	Seconds per Listing
+  variables 	list
+  field 	Time
+</GRAPH>
+
+<GRAPH name=diff>
+  title 	Diff from WC to a past revision
+  label 	Seconds per diff
+  variables 	diff
+  field 	Time
+</GRAPH>
+
+<GRAPH name=log>
+  title 	Recent history of a file
+  label 	Seconds per log
+  variables 	log
+  field 	Time
+</GRAPH>
+
+<GRAPH name=blame>
+  title 	Full blame annotation for a file
+  label 	Seconds per blame
+  variables 	blame
+  field 	Time
+</GRAPH>
+
+<GRAPH name=addTime>
+  Title 	File add time
+  label 	Seconds per file add
+  variables 	add
+  field 	Time
+</GRAPH>
+
+<GRAPH name=delTime>
+  Title 	File delete time
+  label 	Seconds per file delete
+  variables 	del
+  field 	Time
+</GRAPH>
+
+<GRAPH name=mkdirTime>
+  Title 	Directory add time
+  label 	Seconds per directory creation
+  variables 	mkdir
+  field 	Time
+</GRAPH>
+
+# This mainly indicates when files change (no indication of p4 performance)
+<GRAPH name=modTime>
+  Title 	File 'edit' time
+  label 	Seconds per file mod
+  variables 	modify
+  field 	Time
+</GRAPH>
+
+<GRAPH name=readOps>
+  title 	Total Read operations
+  label 	ReadOps/sec
+  variables 	checkout, list, diff, blame, stat, update
+  field 	Try
+</GRAPH>
+
+<GRAPH name=writeOps>
+  title 	All Write operations
+  label 	WriteOps/sec
+  variables 	commit
+  field 	Try
+</GRAPH>
+
+<GRAPH name=readBytes>
+  title 	Total bytes read
+  label 	Bytes/sec
+  variables 	total
+  field 	BytesR
+</GRAPH>
+
+<GRAPH name=writeBytes>
+  title 	Total bytes written
+  label 	Bytes/sec
+  variables 	total
+  field 	BytesW
+</GRAPH>
+
+<GRAPH name=connTime>
+  Title 	Connection setup time
+  label 	Seconds per connection
+  variables 	conn
+  field 	Time
+</GRAPH>
+
+# This is a special variable.  It's the integral of conn-logout.
+<GRAPH name=connections>
+  title 	Total connections
+  label 	Connections
+  variables 	connections
+</GRAPH>
+
+<GRAPH name=totalErrors>
+  title 	Total errors
+  label 	Errors/sec
+  variables 	total
+  field 	Error
+</GRAPH>
+
+<GRAPH name=blocks>
+  title 	Number of mailstone blocks executed
+  label 	Blocks/sec
+  variables 	blocks
+	# this is a scalar.  No "field" needed/allowed
+</GRAPH>
